@@ -139,6 +139,8 @@ export default interface CalendarOptions<T extends CalendarDataSourceElement> {
      */
     clickDay?: (e: CalendarDayEventObject<T>) => void;
 
+    dblclickDay?: (e: CalendarDayEventObject<T>) => void;
+
     /**
      * Function fired when a day is right clicked.
      */

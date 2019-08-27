@@ -78,7 +78,8 @@ export default class Calendar<T extends CalendarDataSourceElement> {
 		}
 	};
 
-	protected static colors = ['#2C8FC9', '#9CB703', '#F5BB00', '#FF4A32', '#B56CE2', '#45A597'];
+	//protected static colors = ['#2C8FC9', '#9CB703', '#F5BB00', '#FF4A32', '#B56CE2', '#45A597'];
+	protected static colors = ['#FF0000'];
 
 	/**
 	 * Fired when a day is clicked.
@@ -92,7 +93,9 @@ export default class Calendar<T extends CalendarDataSourceElement> {
 	 * ```
 	 */
 	public clickDay: CalendarDayEventObject<T>;
-	
+
+	public dblclickDay: CalendarDayEventObject<T>;
+
 	/**
 	 * Fired when a day is right clicked.
 	 * @event
@@ -240,6 +243,7 @@ export default class Calendar<T extends CalendarDataSourceElement> {
 		if (opt.yearChanged) { this.element.addEventListener('yearChanged', opt.yearChanged); }
 		if (opt.renderEnd) { this.element.addEventListener('renderEnd', opt.renderEnd); }
 		if (opt.clickDay) { this.element.addEventListener('clickDay', opt.clickDay); }
+		if (opt.dblclickDay) { this.element.addEventListener('dblclickDay', opt.dblclickDay); }
 		if (opt.dayContextMenu) { this.element.addEventListener('dayContextMenu', opt.dayContextMenu); }
 		if (opt.selectRange) { this.element.addEventListener('selectRange', opt.selectRange); }
 		if (opt.mouseOnDay) { this.element.addEventListener('mouseOnDay', opt.mouseOnDay); }
@@ -772,7 +776,19 @@ export default class Calendar<T extends CalendarDataSourceElement> {
 					events: this.getEvents(date)
 				});
 			});
-		
+
+			/* Double click on date */
+			cell.addEventListener('dblclick', (e: MouseEvent) => {
+				e.stopPropagation();
+
+				var date = this._getDate(e.currentTarget);
+				this._triggerEvent('dblclickDay', {
+					element: e.currentTarget,
+					date: date,
+					events: this.getEvents(date)
+				});
+			});
+
 			/* Click right on date */
 			cell.addEventListener('contextmenu', e => {
 				if (this.options.enableContextMenu)
